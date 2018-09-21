@@ -8,7 +8,7 @@ from peewee import *
 DATABASE = MySQLDatabase('teamtalk', user='root', password='root', host='127.0.0.1', port=8889)
 
 
-class Users(UserMixin, Model):
+class User(UserMixin, Model):
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField(max_length=100)
@@ -28,3 +28,9 @@ class Users(UserMixin, Model):
             )
         except IntegrityError:
             raise ValueError("User already exists")
+
+
+def initialize():
+    DATABASE.connect()
+    DATABASE.create_tables([User], safe=True)
+    DATABASE.close()
