@@ -1,6 +1,7 @@
-from flask import Flask, g
+from flask import Flask, g, flash
 from flask.ext.login import LoginManager
 
+import forms
 import models
 
 app = Flask(__name__)
@@ -34,9 +35,12 @@ def after_request(response):
     return response
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+@app.route('/register', methods=('GET', 'POST'))
+def register():
+    form = forms.RegistrationForm()
+    if form.validate_on_submit():
+        flash("Yay, you register!", "success")
+
 
 
 if __name__ == '__main__':
