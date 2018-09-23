@@ -1,5 +1,5 @@
-from flask import Flask, g, flash
-from flask.ext.login import LoginManager
+from flask import Flask, g, flash, redirect, url_for, render_template
+from flask_login import LoginManager
 
 import forms
 import models
@@ -35,15 +35,30 @@ def after_request(response):
     return response
 
 
+@app.route('/')
+def index():
+    return "Hello"
+
+
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     form = forms.RegistrationForm()
     if form.validate_on_submit():
         flash("Yay, you register!", "success")
-
+        models.User.create_user(
+            username=form.username.data,
+            email=form.email.data,
+            password=form.password.data
+        )
+        return redirect(url_for('index'))
+    return render_template('register.html', form=form)
 
 
 if __name__ == '__main__':
+    print("in main")
     models.initialize()
-    models.User.create_user(username='bjfikky', email='bjfikky@yahoo.com', password='fikky007')
-    app.run()
+    try:
+        models.User.create_user(username='bjfikky', email='bjfikky@yahoo.com', password='fikky007')
+    except ValueError:
+        pass
+    app.run(debug=True)

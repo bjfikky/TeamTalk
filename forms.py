@@ -38,9 +38,11 @@ class RegistrationForm(Form):
 
     password = PasswordField(
         'Password',
-        DataRequired(),
-        Length(min=4),
-        EqualTo('password2', message="Passwords must match")
+        validators=[
+            DataRequired(),
+            Length(min=4),
+            EqualTo('password2', message="Passwords must match")
+        ]
     )
 
     password2 = PasswordField(
