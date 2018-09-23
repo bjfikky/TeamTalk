@@ -40,6 +40,11 @@ def index():
     return "Hello"
 
 
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+    form = forms.LoginForm
+
+
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     form = forms.RegistrationForm()
