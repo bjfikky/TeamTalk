@@ -1,0 +1,26 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+}
+
+.content-area {
+    padding: 40px 0;
+}
+
+.login-card {
+    padding: 20px;
+}
+
+footer {
+    height: 50px;
+    background-color: black;
+    color: darkgrey;
+    font-size: small;
+    padding: 5px;
+    margin-top: auto;
+}
