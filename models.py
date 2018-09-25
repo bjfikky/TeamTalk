@@ -17,6 +17,9 @@ class User(UserMixin, Model):
     class Meta:
         database = DATABASE
 
+    def get_posts(self):
+        return Post.select().where(Post.user == self)
+
     @classmethod
     def create_user(cls, username, email, password):
         try:
