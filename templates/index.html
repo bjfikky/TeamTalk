@@ -1,10 +1,21 @@
+{% from 'macros.html' import render_field %}
+
 {% extends 'layout.html' %}
 
 {% block title %} Updates {% endblock %}
 
 {% block body %}
 <div class="row">
-    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form action="" method="POST" class="form post-form">
+            {{ form.hidden_tag() }}
+
+            {% for field in form %}
+                {{ render_field(field) }}
+            {% endfor %}
+            <button class="btn btn-success" type="submit">Post</button>
+        </form>
+    </div>
 
     <div class="col-md-8 posts">
         <div class="card post">

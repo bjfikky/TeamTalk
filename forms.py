@@ -57,4 +57,10 @@ class LoginForm(Form):
 
 
 class PostForm(Form):
-    content = TextAreaField('Update', validators=[DataRequired()])
+    content = TextAreaField(
+        'Update',
+        validators=[
+            DataRequired(),
+            Length(min=5, message="Post must be a minimum of 5 characters"),
+        ]
+    )

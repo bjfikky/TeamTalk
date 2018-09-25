@@ -37,22 +37,16 @@ def after_request(response):
     return response
 
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 @login_required
 def index():
     form = forms.PostForm()
-    return render_template('index.html', form=form)
-
-
-@app.route('/post', methods=('POST',))
-@login_required
-def post():
-    form = forms.PostForm
     if form.validate_on_submit():
         models.Post.create(user=g.user._get_current_object(), content=form.content.data.strip())
         flash("Message posted", "success")
+        print("was here")
         return redirect(url_for('index'))
-    return redirect(url_for('index'), form=form)
+    return render_template('index.html', form=form)
 
 
 @app.route('/login', methods=('GET', 'POST'))

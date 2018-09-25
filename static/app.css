@@ -18,11 +18,12 @@ body {
 
 .posts {
     background-color: #e3e3e3;
-    padding: 15px;
+    padding: 25px;
+    border-radius: 5px;
 }
 
 .post {
-    padding: 10px;
+    padding: 20px;
     border-radius: 5px;
     margin-bottom: 40px;
 }
@@ -36,6 +37,10 @@ body {
     padding: 5px;
     border-radius: 5px;
     margin: 5px;
+}
+
+.post-form textarea {
+    height: 200px;
 }
 
 footer {
