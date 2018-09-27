@@ -40,13 +40,16 @@ def after_request(response):
 @app.route('/', methods=('GET', 'POST'))
 @login_required
 def index():
+    posts = models.Post.get_all_posts()
+    for post in posts:
+        print(post.content)
     form = forms.PostForm()
     if form.validate_on_submit():
         models.Post.create(user=g.user._get_current_object(), content=form.content.data.strip())
         flash("Message posted", "success")
         print("was here")
         return redirect(url_for('index'))
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, posts=posts)
 
 
 @app.route('/login', methods=('GET', 'POST'))
@@ -56,14 +59,14 @@ def login():
         try:
             user = models.User.get(models.User.email == form.email.data)
         except models.DoesNotExist:
-            flash("Your email or password doesn't match", "error")
+            flash("Your email or password doesn't match", "danger")
         else:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
                 flash("You have been logged in", "success")
                 return redirect(url_for('index'))
             else:
-                flash("Your email or password doesn't match", "error")
+                flash("Your email or password doesn't match", "danger")
     return render_template('login.html', form=form)
 
 
@@ -72,7 +75,7 @@ def login():
 def logout():
     logout_user()
     flash("You have been logged out", "success")
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/register', methods=('GET', 'POST'))

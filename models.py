@@ -17,17 +17,18 @@ class User(UserMixin, Model):
     class Meta:
         database = DATABASE
 
-    def get_posts(self):
-        return Post.select().where(Post.user == self)
+    def get_my_posts(self):
+        return Post.select().limit(100).where(Post.user == self)
 
     @classmethod
     def create_user(cls, username, email, password):
         try:
-            cls.create(
-                username=username,
-                email=email,
-                password=generate_password_hash(password)
-            )
+            with DATABASE.transaction():
+                cls.create(
+                    username=username,
+                    email=email,
+                    password=generate_password_hash(password)
+                )
         except IntegrityError:
             raise ValueError("User already exists")
 
@@ -39,7 +40,10 @@ class Post(Model):
 
     class Meta:
         database = DATABASE
-        order_by = ('-timestamp',)
+
+    @classmethod
+    def get_all_posts(cls):
+        return cls.select().order_by(-cls.timestamp).limit(100)
 
 
 def initialize():
